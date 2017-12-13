@@ -1,0 +1,31 @@
+{
+  "name": "bundle-service",
+  "version": "1.0.0",
+  "description": "The project description",
+  "scripts": {
+    "test": "mocha",
+    "start": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rithnarin/bundle-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rithnarin/bundle-service/issues"
+  },
+  "homepage": "https://github.com/rithnarin/bundle-service#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "faker": "^4.1.0",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.5",
+    "pg": "^7.4.0",
+    "sequelize": "^4.28.0",
+    "supertest": "^3.0.0"
+  }
+}
