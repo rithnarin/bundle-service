@@ -46,8 +46,8 @@ let saveBundle = () => {
 let saveProdBundles = () => {
   var prodBundles = [];
   for (var i = 0; i <= 10000; i++) {
-    var randomInv = Math.floor(Math.random() * (10626948 - 1) + 1);
-    var randomBund = Math.floor(Math.random() * (10503373 - 1) + 1);
+    var randomInv = Math.floor(Math.random() * (10626948 - 1 + 1)) + 1;
+    var randomBund = Math.floor(Math.random() * (10503373 - 1 + 1)) + 1;
     let pb = {
       inventoryId: randomInv,
       bundleId: randomBund,
