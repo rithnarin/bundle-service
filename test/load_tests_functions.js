@@ -26,7 +26,6 @@ function generateFakeData(userContext, events, done) {
   let bundleName = faker.commerce.product();
   let itemIds = [];
   let productAmount = Math.floor(Math.random() * (11 - 3 + 1)) + 3;
-  let productId = generateRandomId();
 
   for (var i = 0; i < productAmount; i++) {
     itemIds.push(generateRandomId());
@@ -34,7 +33,6 @@ function generateFakeData(userContext, events, done) {
 
   userContext.vars.bundleName = bundleName;
   userContext.vars.itemIds = itemIds;
-  userContext.vars.productId = productId;
 
   return done();
 }

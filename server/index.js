@@ -19,12 +19,9 @@ app.post('/createbundle', (req, res) => {
   res.end();
 });
 
-let count = 0;
 app.get('/bundleref', (req, res) => {
-  count++;
   db.findBundleWithProduct(req.query.product_id)
     .then((products) => {
-      console.log(count);
       res.send(products);
     })
     .catch(err => console.error('Bundle Reference Request Failed'));
