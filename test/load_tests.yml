@@ -1,0 +1,13 @@
+config:
+  target: 'http://localhost:5000'
+  phases:
+    - duration: 1
+      arrivalRate: 2000
+      name: "Bundle References"
+  defaults:
+    headers:
+      x-my-service-auth: '987401838271002188298567'
+scenarios:
+  - flow:
+    - get:
+        url: "/bundleref?product_id=634"

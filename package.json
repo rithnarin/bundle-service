@@ -4,7 +4,9 @@
   "description": "The project description",
   "scripts": {
     "test": "mocha",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "send": "node server/sqs_sendmessage.js",
+    "load": "artillery run test/load_tests.yml"
   },
   "repository": {
     "type": "git",
@@ -17,15 +19,20 @@
   },
   "homepage": "https://github.com/rithnarin/bundle-service#readme",
   "dependencies": {
+    "aws-sdk": "^2.171.0",
+    "axios": "^0.17.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
-    "chai": "^4.1.2",
     "express": "^4.16.2",
+    "pg": "^7.4.0",
+    "sequelize": "^4.28.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "faker": "^4.1.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.5",
-    "pg": "^7.4.0",
-    "sequelize": "^4.28.0",
     "supertest": "^3.0.0"
   }
 }
