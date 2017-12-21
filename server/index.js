@@ -4,29 +4,59 @@ const db = require('../database/postgres.js');
 const bodyParser = require('body-parser');
 const sqs = require('./sqs.js');
 const Promise = require('bluebird');
+const redis = require('redis');
 
+Promise.promisifyAll(redis.RedisClient.prototype);
+Promise.promisifyAll(redis.Multi.prototype);
+
+// simulate requests
 // require('./bundlin.js');
 
 // comment out if data is already saved
 // require('../database/saveFakeData.js');
 
 let app = express();
+let client = redis.createClient();
 
 app.use(bodyParser.json());
 
+//route to create bundle
 app.post('/createbundle', (req, res) => {
   db.createBundle(req.body.bundleName, req.body.itemIds);
   res.end();
 });
 
+//route to get all items in a bundle
 app.get('/bundleref', (req, res) => {
-  db.findBundleWithProduct(req.query.product_id)
-    .then((products) => {
-      res.send(products);
-    })
-    .catch(err => console.error('Bundle Reference Request Failed'));
+  let result;
+
+  client.get((req.query.product_id).toString(), (err, reply) => {
+    if (reply) {
+      result = JSON.parse(reply);
+      res.send(result);
+    } else {
+      db.findBundleWithProduct(req.query.product_id)
+        .then(products => {
+          result = JSON.stringify(products);
+          return products;
+        })
+        .then(products => {
+          if (products) {
+            client.set((req.query.product_id).toString(), result);
+            return products;
+          } else {
+            res.end();
+          }
+        })
+        .then(products => {
+          res.send(products);
+        })
+        .catch(err => console.error('Bundle Reference Request Failed'));
+    }
+  });
 });
 
+//route to go into the queue to update bundles
 app.get('/bundleupdate', (req, res) => {
   sqs.getQueue((queue) => {
       db.discontinuedProduct(parseInt(queue[queue.length-1].MessageAttributes.id.StringValue));
@@ -40,6 +70,10 @@ app.get('/bundleupdate', (req, res) => {
   });
 
   res.end();
+});
+
+client.on('connect', () => {
+  console.log('Redis connected');
 });
 
 app.listen(5000, () => {

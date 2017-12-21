@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 
 describe('App', () => {
   describe('/bundleref', () => {
+
     it('responds with status 200', done => {
       let randomId = Math.floor(Math.random() * (50000 - 1 + 1)) + 1;
       chai.request(app)
@@ -20,6 +21,7 @@ describe('App', () => {
         });
       done();
     });
+
     it('returns all items in the associated bundle', done => {
       let results = [
         { id: 1116,
@@ -70,6 +72,7 @@ describe('App', () => {
   });
 
   describe('/createbundle', () => {
+
     it('responds with status 201', done => {
       let bundleName = faker.commerce.product();
       let itemIds = [];
@@ -87,6 +90,7 @@ describe('App', () => {
         });
       done();
     });
+
     it('sends to the body', done => {
       let bundleName = faker.commerce.product();
       let itemIds = [];

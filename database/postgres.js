@@ -61,7 +61,7 @@ const findBundleWithProduct = (productId) => {
       return findAllProductInBundle(bundles);
     })
     .catch(err => {
-      return;
+      return console.error('Item is not in a bundle');
     });
   // return db.query(`SELECT i2.id, i2.product_name, i2.product_description, i2.product_image, i2.category, i2.price, i2.inventory_count FROM inventories i
   //   INNER JOIN prod_bundles pb
