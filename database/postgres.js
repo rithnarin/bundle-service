@@ -84,12 +84,14 @@ const findBundleWithProduct = (productId) => {
 
 const findAllProductInBundle = (bundles) => {
   let productIds = [];
+  let sendProducts;
   bundles.forEach(product => {
     productIds.push(product.inventoryId);
   });
-
   return Inventory.findAll({ where: { id: { [Op.or]: productIds } } })
-    .then( products => {
+    .then(products => {
+      sendProducts = products;
+      sendProducts.unshift({ bundleId: bundles[0].dataValues.bundleId });
       return products;
     })
 }
@@ -97,6 +99,21 @@ const findAllProductInBundle = (bundles) => {
 const discontinuedProduct = (productId) => {
   return ProductBundles.destroy({ where: { inventoryId: productId } })
     .catch(err => console.error(`Error deleting product: ${productId}`));
+}
+
+const getBundleId = (productId) => {
+  return ProductBundles.findOne({ where: { inventoryId: productId } })
+    .then(row => {
+      return row.bundleId;
+    })
+    .catch(() => console.error('Not in any bundles'));
+}
+
+const getProductsInBundle = (bundleId) => {
+  return ProductBundles.findAll({ where: { bundleId: bundleId } })
+    .then(products => {
+      return findAllProductInBundle(products);
+    });
 }
 
 exports.db = db;
@@ -107,3 +124,5 @@ exports.createBundle = createBundle;
 exports.findBundleWithProduct = findBundleWithProduct;
 // exports.findAllProductInBundle = findAllProductInBundle;
 exports.discontinuedProduct = discontinuedProduct;
+exports.getBundleId = getBundleId;
+exports.getProductsInBundle = getProductsInBundle;

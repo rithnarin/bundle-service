@@ -12,19 +12,19 @@ scenarios:
     flow:
       - function: "getProductId"
       - get:
-          url: "/bundleref?product_id={{ productId }}"
+          url: "/bundleref?product_id={{productId}}"
       - log: "Sent a request to /bundleref with {{ productId }}"
-  - name: "Create a bundle"
-    flow:
-      - function: "generateFakeData"
-      - post:
-          url: "/createbundle"
-          json:
-            bundleName: "{{ bundleName }}"
-            itemIds: "{{ itemIds }}"
-      - log: "Sent a request to /createbundle with {{ bundleName }}, {{ itemIds }}"
-  - name: "Update bundles through a queue"
-    flow:
-      - get:
-          url: "/bundleupdate"
-      - log: "Sent a request to /bundleupdate"
+  # - name: "Create a bundle"
+  #   flow:
+  #     - function: "generateFakeData"
+  #     - post:
+  #         url: "/createbundle"
+  #         json:
+  #           bundleName: "{{ bundleName }}"
+  #           itemIds: "{{ itemIds }}"
+  #     - log: "Sent a request to /createbundle with {{ bundleName }}, {{ itemIds }}"
+  # - name: "Update bundles through a queue"
+  #   flow:
+  #     - get:
+  #         url: "/bundleupdate"
+  #     - log: "Sent a request to /bundleupdate"
