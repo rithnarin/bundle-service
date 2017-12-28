@@ -1,8 +1,8 @@
 config:
-  target: 'http://localhost:5000'
+  target: 'http://localhost:8080'
   phases:
-    - duration: 1
-      arrivalRate: 10000
+    - duration: 10
+      arrivalRate: 1000
   processor: "./load_tests_functions.js"
   defaults:
     headers:

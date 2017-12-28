@@ -20,6 +20,11 @@ let client = redis.createClient();
 
 app.use(bodyParser.json());
 
+//route to check Connection
+app.get('/', (req, res) => {
+  res.end('Hello World!');
+});
+
 // route to create bundle
 app.post('/createbundle', (req, res) => {
   db.createBundle(req.body.bundleName, req.body.itemIds);
@@ -31,7 +36,7 @@ app.get('/bundleref', (req, res) => {
   let result;
   let bundleId;
 
-  db.getBundleId(req.query.product_id)
+  db.getBundleId(parseInt(req.query.product_id))
     .then(id => {
       bundleId = id;
     })
@@ -83,7 +88,7 @@ app.get('/bundleupdate', (req, res) => {
             }
           });
         });
-  });
+  })
   .catch(err => {
     console.error('Error getting queue');
   });
@@ -98,8 +103,24 @@ client.on('connect', () => {
 });
 
 // Listen for the server
-app.listen(5000, () => {
-  console.log(`Listening on port 5000...`);
-});
+// app.listen(8080, () => {
+//   console.log(`Listening on port 8080...`);
+// });
+const serve = port => {
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}...`);
+  });
+}
+
+serve(8000);
+serve(8001);
+serve(8002);
+serve(8003);
+serve(8004);
+serve(8005);
+serve(8006);
+serve(8007);
+serve(8008);
+serve(8009);
 
 module.exports = app;

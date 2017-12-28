@@ -10,6 +10,7 @@ db.authenticate()
   .then(() => console.log('Connection has been established successfully!'))
   .catch(err => console.error('Error connecting:', err));
 
+// Inventory Schema
 const Inventory = db.define('inventory', {
   product_name: Sequelize.STRING,
   product_description: Sequelize.STRING,
@@ -19,10 +20,12 @@ const Inventory = db.define('inventory', {
   inventory_count: Sequelize.INTEGER,
 });
 
+// Bundles Schema
 const Bundles = db.define('bundles', {
   bundle_name: Sequelize.STRING,
 });
 
+// Join table for inventory and bundles
 const ProductBundles = db.define('prod_bundles', {
   id: {
     type: Sequelize.INTEGER,
@@ -34,6 +37,7 @@ const ProductBundles = db.define('prod_bundles', {
 Inventory.belongsToMany(Bundles, { through: ProductBundles });
 Bundles.belongsToMany(Inventory, { through: ProductBundles });
 
+// create bundles
 const createBundle = (bundleName, itemIds) => {
   const newBundle = {
     bundle_name: bundleName,
@@ -52,7 +56,9 @@ const createBundle = (bundleName, itemIds) => {
     .catch(err => console.error('Failed to create bundle.'));
 }
 
+// find all products in a bundle using one of the products id
 const findBundleWithProduct = (productId) => {
+  // comment out to use raw sql queries
   return ProductBundles.findOne({ where: { inventoryId: productId } })
     .then(product => {
       return ProductBundles.findAll({ where: { bundleId: product.bundleId } })
@@ -63,6 +69,10 @@ const findBundleWithProduct = (productId) => {
     .catch(err => {
       return console.error('Item is not in a bundle');
     });
+
+  // raw sql query to get all products in a bundle using one of the products id
+  // uncomment to not use sequelize queries
+
   // return db.query(`SELECT i2.id, i2.product_name, i2.product_description, i2.product_image, i2.category, i2.price, i2.inventory_count FROM inventories i
   //   INNER JOIN prod_bundles pb
   //     ON i.id = pb."inventoryId"
@@ -82,6 +92,7 @@ const findBundleWithProduct = (productId) => {
   //     });
 }
 
+// used with findBundleWithProduct to get items in a bundle
 const findAllProductInBundle = (bundles) => {
   let productIds = [];
   let sendProducts;
@@ -96,11 +107,13 @@ const findAllProductInBundle = (bundles) => {
     })
 }
 
+// deletes product from bundle that has been discontinued
 const discontinuedProduct = (productId) => {
   return ProductBundles.destroy({ where: { inventoryId: productId } })
     .catch(err => console.error(`Error deleting product: ${productId}`));
 }
 
+// find the bundle id for which a product belongs to
 const getBundleId = (productId) => {
   return ProductBundles.findOne({ where: { inventoryId: productId } })
     .then(row => {
@@ -109,6 +122,7 @@ const getBundleId = (productId) => {
     .catch(() => console.error('Not in any bundles'));
 }
 
+// gets all the products in a bundle using just the bundle id
 const getProductsInBundle = (bundleId) => {
   return ProductBundles.findAll({ where: { bundleId: bundleId } })
     .then(products => {
@@ -122,7 +136,7 @@ exports.Bundles = Bundles;
 exports.ProductBundles = ProductBundles;
 exports.createBundle = createBundle;
 exports.findBundleWithProduct = findBundleWithProduct;
-// exports.findAllProductInBundle = findAllProductInBundle;
+exports.findAllProductInBundle = findAllProductInBundle;
 exports.discontinuedProduct = discontinuedProduct;
 exports.getBundleId = getBundleId;
 exports.getProductsInBundle = getProductsInBundle;
