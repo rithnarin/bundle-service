@@ -1,7 +1,3 @@
 .DS_Store
 .env
-server/index2.js
-server/index3.js
-server/index4.js
-server/index5.js
 dump.rdb

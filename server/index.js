@@ -22,7 +22,8 @@ app.use(bodyParser.json());
 
 //route to check Connection
 app.get('/', (req, res) => {
-  res.end('Hello World!');
+  console.log(req);
+  res.end('Hello World~!');
 });
 
 // route to create bundle
@@ -83,17 +84,14 @@ app.get('/bundleupdate', (req, res) => {
                   console.error('Error deleting message: ', err);
                 } else if (data) {
                   console.log('Message deleted: ', parseInt(queue[queue.length-1].MessageAttributes.id.StringValue));
+                  res.end();
                 }
               });
             }
           });
         });
   })
-  .catch(err => {
-    console.error('Error getting queue');
-  });
 
-  res.end();
 });
 
 
@@ -118,9 +116,5 @@ serve(8002);
 serve(8003);
 serve(8004);
 serve(8005);
-serve(8006);
-serve(8007);
-serve(8008);
-serve(8009);
 
 module.exports = app;

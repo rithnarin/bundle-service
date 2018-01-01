@@ -59,37 +59,37 @@ const createBundle = (bundleName, itemIds) => {
 // find all products in a bundle using one of the products id
 const findBundleWithProduct = (productId) => {
   // comment out to use raw sql queries
-  return ProductBundles.findOne({ where: { inventoryId: productId } })
-    .then(product => {
-      return ProductBundles.findAll({ where: { bundleId: product.bundleId } })
-    })
-    .then(bundles => {
-      return findAllProductInBundle(bundles);
-    })
-    .catch(err => {
-      return console.error('Item is not in a bundle');
-    });
+  // return ProductBundles.findOne({ where: { inventoryId: productId } })
+  //   .then(product => {
+  //     return ProductBundles.findAll({ where: { bundleId: product.bundleId } })
+  //   })
+  //   .then(bundles => {
+  //     return findAllProductInBundle(bundles);
+  //   })
+  //   .catch(err => {
+  //     return console.error('Item is not in a bundle');
+  //   });
 
   // raw sql query to get all products in a bundle using one of the products id
   // uncomment to not use sequelize queries
 
-  // return db.query(`SELECT i2.id, i2.product_name, i2.product_description, i2.product_image, i2.category, i2.price, i2.inventory_count FROM inventories i
-  //   INNER JOIN prod_bundles pb
-  //     ON i.id = pb."inventoryId"
-  //   INNER JOIN bundles b
-  //     ON b.id = pb."bundleId"
-  //
-  //   INNER JOIN prod_bundles pb2
-  //     ON pb2."bundleId" = b.id
-  //   INNER JOIN inventories i2
-  //     ON i2.id = pb2."inventoryId"
-  //     WHERE i.id = ${productId}`)
-  //     .spread((results, metadata) => {
-  //       return results;
-  //     })
-  //     .catch(() => {
-  //       console.log('Failed to get items');
-  //     });
+  return db.query(`SELECT i2.id, i2.product_name, i2.product_description, i2.product_image, i2.category, i2.price, i2.inventory_count FROM inventories i
+    INNER JOIN prod_bundles pb
+      ON i.id = pb."inventoryId"
+    INNER JOIN bundles b
+      ON b.id = pb."bundleId"
+
+    INNER JOIN prod_bundles pb2
+      ON pb2."bundleId" = b.id
+    INNER JOIN inventories i2
+      ON i2.id = pb2."inventoryId"
+      WHERE i.id = ${productId}`)
+      .spread((results, metadata) => {
+        return results;
+      })
+      .catch(() => {
+        console.log('Failed to get items');
+      });
 }
 
 // used with findBundleWithProduct to get items in a bundle
