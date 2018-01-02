@@ -6,6 +6,8 @@ const sqs = require('./sqs.js');
 const Promise = require('bluebird');
 const redis = require('redis');
 
+require('dotenv').config();
+
 Promise.promisifyAll(redis.RedisClient.prototype);
 Promise.promisifyAll(redis.Multi.prototype);
 
@@ -13,7 +15,7 @@ Promise.promisifyAll(redis.Multi.prototype);
 // require('./bundlin.js');
 
 // comment out if data is already saved
-// require('../database/saveFakeData.js');
+ require('../database/saveFakeData.js');
 
 let app = express();
 let client = redis.createClient();
@@ -22,7 +24,6 @@ app.use(bodyParser.json());
 
 //route to check Connection
 app.get('/', (req, res) => {
-  console.log(req);
   res.end('Hello World~!');
 });
 

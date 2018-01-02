@@ -2,12 +2,14 @@ const Sequelize = require('sequelize');
 const Promise = require('bluebird');
 const Op = Sequelize.Op;
 
+require('dotenv').config();
+
 let params = { logging: false };
 
-const db = new Sequelize('postgres://rithnarinkong:@localhost:5432/bundleservice', params);
+const db = new Sequelize(process.env.DATABASE_URL, params);
 
 db.authenticate()
-  .then(() => console.log('Connection has been established successfully!'))
+  .then(() => console.log('Connection to database successful!!'))
   .catch(err => console.error('Error connecting:', err));
 
 // Inventory Schema

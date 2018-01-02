@@ -11,7 +11,7 @@ const orm = require('./postgres.js');
 
 let saveInventory = () => {
   var inventory = [];
-  for (var i = 0; i < 100000; i++) {
+  for (var i = 0; i < 1000000; i++) {
     let price = faker.commerce.price();
     let product =  {
       product_name: faker.commerce.productName(),
@@ -31,7 +31,7 @@ let saveInventory = () => {
 
 let saveBundle = () => {
   var bundles = [];
-  for (var i = 0; i < 100000; i++) {
+  for (var i = 0; i < 1000000; i++) {
     let bundle = {
       bundle_name: faker.commerce.product()
     }
@@ -43,23 +43,23 @@ let saveBundle = () => {
     .catch(err => console.error(err));
 }
 
-let saveProdBundles = () => {
-  var prodBundles = [];
-  for (var i = 0; i <= 10000; i++) {
-    var randomInv = Math.floor(Math.random() * (10626948 - 1 + 1)) + 1;
-    var randomBund = Math.floor(Math.random() * (10503373 - 1 + 1)) + 1;
-    let pb = {
-      inventoryId: randomInv,
-      bundleId: randomBund,
-    }
-    prodBundles.push(pb);
-  }
-  orm.ProductBundles.bulkCreate(prodBundles);
-  Promise.all(prodBundles)
-    .then(prodBundle => console.log('Saved Inventory to Bundles'))
-    .catch(err => console.error(err));
-}
+//let saveProdBundles = () => {
+//  var prodBundles = [];
+//  for (var i = 0; i <= 10000; i++) {
+//    var randomInv = Math.floor(Math.random() * (10626948 - 1 + 1)) + 1;
+//    var randomBund = Math.floor(Math.random() * (10503373 - 1 + 1)) + 1;
+//    let pb = {
+//      inventoryId: randomInv,
+//      bundleId: randomBund,
+//    }
+//    prodBundles.push(pb);
+//  }
+//  orm.ProductBundles.bulkCreate(prodBundles);
+//  Promise.all(prodBundles)
+//    .then(prodBundle => console.log('Saved Inventory to Bundles'))
+//    .catch(err => console.error(err));
+//}
 
-// saveInventory();
-// saveBundle();
+saveInventory();
+saveBundle();
 // saveProdBundles();
