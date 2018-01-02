@@ -15,7 +15,7 @@ Promise.promisifyAll(redis.Multi.prototype);
 // require('./bundlin.js');
 
 // comment out if data is already saved
- require('../database/saveFakeData.js');
+// require('../database/saveFakeData.js');
 
 let app = express();
 let client = redis.createClient();
